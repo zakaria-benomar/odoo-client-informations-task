@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+
+    <data>
+
+
+
+        <record id="client_wizard_view_form" model="ir.ui.view">
+            <field name="name">client.wizard.form</field>
+
+            <field name="model">client.wizard</field>
+            <field name="arch" type="xml">
+                <form>
+                    <group>
+                        <field name="denomination"/>
+                        <field name="patente"/>
+
+                        <field name="ice"/>
+                        <field name="rc"/>
+                        <field name="idf"/>
+                    </group>
+                    <group>
+
+                        <button name="chercher" type="object" string="Rechercher"
+                                class="oe_button oe_form_button oe_highlight"/>
+                    </group>
+
+                    <field name="json_result">
+                        <tree editable="bottom">
+                            <field name="denomination" readonly="1"/>
+                            <field name="rc" readonly="1"/>
+                            <field name="idf" readonly="1"/>
+                            <field name="ice" readonly="1"/>
+                            <field name="patente" readonly="1"/>
+                            <button name="appliquer_func" type="object" string="Appliquer"
+                                    class="oe_button oe_form_button oe_highlight"/>
+                        </tree>
+                    </field>
+                    <footer>
+
+                        <button name="enregistrer_func" type="object" string="Enregistrer"
+                                class="oe_button oe_form_button oe_highlight"/>
+
+                        <button string="Cancel" class="oe_link" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <!--<act_window id="launch_the_wizard"
+            name="Add more informations"
+            src_model="res.partner"
+            res_model="client.wizard"
+            view_mode="form"
+            target="new"
+            key2="client_action_multi"
+            context="{'denomination': name}"/>-->
+
+
+        <record id="client_view_form" model="ir.ui.view">
+
+            <field name="name">client.form</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="model">res.partner</field>
+            <field name="arch" type="xml">
+
+                <xpath expr="/form/*" position="before">
+                    <header>
+                        <button string="Recherche ICE" type="object" name="open_wizard" class="oe_highlight"/>
+                    </header>
+                </xpath>
+                <xpath expr="//field[@name='category_id']" position="after">
+
+
+                    <field name="denomination"/>
+                    <field name="rc"/>
+                    <field name="idf"/>
+                    <field name="ice"/>
+                    <field name="patente"/>
+
+
+                </xpath>
+            </field>
+        </record>
+
+
+        <record model="ir.actions.act_window" id="client_action_window">
+            <field name="name">Filiere window</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">res.partner</field>
+
+            <field name="view_type">form</field>
+            <field name="view_mode">kanban,tree,form</field>
+            <field name="arch" type="html">
+                <p>
+                    creer un nouveau client !
+                </p>
+            </field>
+        </record>
+        <menuitem name="Clients" id="client_menu"/>
+        <menuitem name="Client" id="client_sub_menu" parent="client_menu"/>
+        <menuitem name="Client" id="client_sub_menu_action" parent="client_sub_menu" action="client_action_window"/>
+    </data>
+
+</odoo>
